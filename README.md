@@ -1,4 +1,4 @@
-# Advent of Code 2025
+ # Advent of Code Solutions
 
 These scripts can be run with a stock Perl installation--check the cpanfile for
 any extra modules that need to be installed. Alternatively, they can be run with
@@ -24,5 +24,6 @@ For example:
 
     $ . ./shortcut.sh              # set up command-line function
     $ cat input | aoc 2025 01 1    # run day 1, puzzle 1 script
+
 
 
