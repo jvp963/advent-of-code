@@ -1,4 +1,4 @@
-# Advent of Code 2025
+ # Advent of Code Solutions
 
 These scripts can be run with a stock Perl installation--check the cpanfile for
 any extra modules that need to be installed. Alternatively, they can be run with
@@ -14,7 +14,7 @@ To run a script with carton using a docker container we'll need to mount the cur
     docker run --rm -i -v /path/to/script/location:/opt/ perl:advent-of-code \
         carton exec perl /opt/<script.pl>
 
-Also included is a shell alias that simplifies this command. It depends on the a certain directory structure where the scripts are located--examine the script for more info. It takes two positional arguments:
+Also included is a shell alias that simplifies this command. It depends on the a certain directory structure where the scripts are located--examine the script for more info. It takes three positional arguments:
 
 - The year of the challenge (four digits)
 - The day of the challenge (two digits, zero-padded)
@@ -24,4 +24,6 @@ For example:
 
     $ . ./shortcut.sh              # set up command-line function
     $ cat input | aoc 2025 01 1    # run day 1, puzzle 1 script
+
+
 
