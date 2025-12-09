@@ -3,48 +3,64 @@
 use strict;
 use warnings;
 
-# read input
 my @map = ( );
+
+# read input
 while (<>) {
+	chomp;
 	push @map, [ split(//, $_) ];
 }
 my $width = $#{$map[0]};
 
-my $world_count = 0;
-my @beams_at = ( );
 
 # process top row
-foreach my $loc (0..$width) {
-	if ($map[0][$loc] eq 'S') {
-		$beams_at[$loc] = 1;
-	} else {
-		$beams_at[$loc] = 0;
-	}
-}
-
-# procss additional rows
+my @beams_above = ( );
+my @beams_at = ( );
 foreach my $row (1..$#map) {
 	foreach my $loc (0..$width) {
-		if ($map[$row][$loc] eq '^') {
-			if ($beams_at[$loc]) {
-				$beams_at[$loc] = 0;
-				if ($loc - 1 >= 0) {
-					$world_count++;
-					unless ($beams_at[$loc-1]) {
-						$beams_at[$loc-1] = 1;
-					}
-				}
-				if ($loc + 1 <= $width) {
-					$world_count++;
-					unless ($beams_at[$loc+1]) {
-						$beams_at[$loc+1] = 1;
-					}
-				}
-			}
+		if ($map[0][$loc] eq 'S') {
+			$beams_above[$loc] = 1;
+			$beams_at[$loc] = 0;
+		} else {
+			$beams_above[$loc] = 0;
+			$beams_at[$loc] = 0;
 		}
 	}
-	#print "After row $row, beams at " . join(",", @beams_at) . "\n";
 }
-$world_count -= 2;
 
-print "Total world count = $world_count\n";
+foreach my $row (1..$#map) {
+	#print "ABOVE: ", join(" ", @beams_above),"\n";
+	#print "CURNT: ", join(" ", @{$map[$row]}),"\n";
+	foreach my $loc (0..$width) {
+		if ($map[$row][$loc] eq '^') {
+			# look above for beam and split if needed
+			if ($beams_above[$loc] > 0) {
+				$beams_at[$loc-1] += $beams_above[$loc];
+				$beams_at[$loc+1] += $beams_above[$loc];
+				$beams_at[$loc] = 0;
+			}
+		} else {
+			$beams_at[$loc] += $beams_above[$loc];
+		}
+	}
+	@beams_above = @beams_at;
+	foreach my $reset_loc (0..$width) {
+		@beams_at[$reset_loc] = 0;
+	}
+	my $row_paths = 0;
+	foreach (@beams_above) {
+		$row_paths += $_;
+	}
+	#print "AFTER: ", join(" ", @beams_above),"\n";
+	#print "Row $row, row paths = $row_paths\n\n";
+	#last if $row == 2;
+}
+
+my $total_paths = 0;
+foreach (@beams_above) {
+	$total_paths += $_;
+}
+
+
+
+print "Total world count = $total_paths\n";
